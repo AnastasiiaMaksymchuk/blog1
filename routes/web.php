@@ -21,4 +21,18 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
-Route::resource('post', PostController::class)->names('Post');
+Route::resource('posts', PostController::class)->names('blog.post');
+
+//Адмінка
+$groupData = [
+    'namespace' => 'App\Http\Controllers\Blog\Admin',
+    'prefix' => 'admin/blog',
+];
+Route::group($groupData, function () {
+    //BlogCategory
+    $methods = ['index','edit','store','update','create',];
+    Route::resource('categories', CategoryController::class)
+        ->only($methods)
+        ->names('blog.admin.categories');
+});
+
